@@ -31,6 +31,12 @@ class Mover:
     def display(self):
         pygame.draw.circle(screen, GRAY, (self.location.x, self.location.y), 16, 2)
 
+    def draw_circle_alpha(self, surface, color, radius):
+        target_rect = pygame.Rect((self.location.x, self.location.y), (0, 0)).inflate((radius * 2, radius * 2))
+        shape_surf = pygame.Surface(target_rect.size, pygame.SRCALPHA)
+        pygame.draw.circle(shape_surf, color, (radius, radius), radius)
+        surface.blit(shape_surf, target_rect)
+    
     def check_edges(self):
         if self.location.x > WIDTH:
             self.location.x = 0
@@ -70,7 +76,8 @@ while True:
     for mover in movers:
         mover.update(mouse_x, mouse_y)
         mover.check_edges()
-        mover.display()
+        #mover.display()
+        mover.draw_circle_alpha(screen, GRAY, 16)
 
     pygame.display.update()
     fpsClock.tick(FPS)
