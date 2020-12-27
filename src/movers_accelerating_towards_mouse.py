@@ -29,9 +29,9 @@ class Mover:
         self.location += self.velocity
 
     def display(self):
-        pygame.draw.circle(screen, GRAY, (self.location.x, self.location.y), 16, 0)
+        pygame.draw.circle(screen, GRAY, (self.location.x, self.location.y), 16, 2)
 
-    def check_edges():
+    def check_edges(self):
         if self.location.x > WIDTH:
             self.location.x = 0
         elif self.location.x < 0:
@@ -54,7 +54,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
 pygame.display.set_caption('Movers Accelerating Towards Mouse')
 
-GRAY = (128, 128, 128)
+GRAY = (128, 128, 128, 50)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
@@ -69,6 +69,7 @@ while True:
     
     for mover in movers:
         mover.update(mouse_x, mouse_y)
+        mover.check_edges()
         mover.display()
 
     pygame.display.update()
