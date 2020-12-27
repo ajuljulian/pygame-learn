@@ -36,6 +36,10 @@ class Mover:
         shape_surf = pygame.Surface(target_rect.size, pygame.SRCALPHA)
         pygame.draw.circle(shape_surf, color, (radius, radius), radius)
         surface.blit(shape_surf, target_rect)
+        # There has to be a better way of drawing a border around a transparent shape.
+        pygame.draw.circle(screen, GRAY, (self.location.x, self.location.y), radius, 2)
+        
+
     
     def check_edges(self):
         if self.location.x > WIDTH:
