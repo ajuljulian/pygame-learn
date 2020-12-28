@@ -83,10 +83,11 @@ while True:
             sys.exit()
 
     wind = Vec2d(0.01, 0)
-    gravity = Vec2d(0, 0.1)
+    #gravity = Vec2d(0, 0.1)
 
     for mover in movers:
         mover.apply_force(wind)
+        gravity = Vec2d(0, 0.1 * mover.mass) # gravity proportional to mass
         mover.apply_force(gravity)
         mover.update()
         mover.display()
