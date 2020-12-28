@@ -16,8 +16,8 @@ class Mover:
         self.topspeed = 9
 
     def apply_force(self, force):
-        f = force / self.mass
-        self.acceleration += f
+        acceleration = force / self.mass
+        self.acceleration += acceleration
 
     def update(self):
         self.velocity += self.acceleration
@@ -55,8 +55,10 @@ BLUE_50 = (0, 0, 255, 50)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
+NUM_MOVERS = 50
+
 movers = []
-for _ in range(100):
+for _ in range(NUM_MOVERS):
     random_color = random.choice([GRAY_50, RED_50, GREEN_50, BLUE_50])
     random_location = Vec2d(random.randint(0, WIDTH), random.randint(0, HEIGHT))
     random_mass = random.uniform(0.5, 4)
