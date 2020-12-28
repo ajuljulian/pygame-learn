@@ -47,7 +47,7 @@ class Mover:
             self.location.y = 0
             self.velocity.y *= -1 
 
-GRAY_50 = (128, 128, 128, 50)
+GRAY_50 = (33, 33, 33, 50)
 RED_50 = (255, 0, 0, 50)
 GREEN_50 = (0, 255, 0, 50)
 BLUE_50 = (0, 0, 255, 50)
@@ -59,7 +59,8 @@ NUM_MOVERS = 50
 
 movers = []
 for _ in range(NUM_MOVERS):
-    random_color = random.choice([GRAY_50, RED_50, GREEN_50, BLUE_50])
+    #random_color = random.choice([GRAY_50, RED_50, GREEN_50, BLUE_50])
+    random_color = GRAY_50
     random_location = Vec2d(random.randint(0, WIDTH), random.randint(0, HEIGHT))
     random_mass = random.uniform(0.5, 4)
     movers.append(Mover(random_location, random_mass, random_color))
