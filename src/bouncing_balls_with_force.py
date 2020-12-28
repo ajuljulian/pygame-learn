@@ -6,12 +6,14 @@ from vector import Vec2d
 WIDTH, HEIGHT = 640, 360
 
 class Mover:
-    def __init__(self):
-        self.location = Vec2d(random.randint(0, WIDTH), random.randint(0, HEIGHT))
+    
+    def __init__(self, location, mass, color):
+        self.location = location
+        self.mass = mass
+        self.color = color
         self.velocity = Vec2d(0, 0)
         self.acceleration = Vec2d(0, 0)
         self.topspeed = 9
-        self.mass = 1
 
     def apply_force(self, force):
         f = force / self.mass
@@ -21,19 +23,14 @@ class Mover:
         self.velocity += self.acceleration
         self.location += self.velocity
         self.acceleration *= 0
-    '''    
+      
     def display(self):
-        pygame.draw.circle(screen, GRAY, (self.location.x, self.location.y), 16, 2)
-    '''
-    def draw_circle_alpha(self, surface, color, radius):
+        radius = self.mass * 8
+        pygame.draw.circle(screen, self.color, (self.location.x, self.location.y), radius, 2)
         target_rect = pygame.Rect((self.location.x, self.location.y), (0, 0)).inflate((radius * 2, radius * 2))
         shape_surf = pygame.Surface(target_rect.size, pygame.SRCALPHA)
-        pygame.draw.circle(shape_surf, color, (radius, radius), radius)
-        surface.blit(shape_surf, target_rect)
-        # There has to be a better way of drawing a border around a transparent shape.
-        pygame.draw.circle(screen, GRAY, (self.location.x, self.location.y), radius, 2)
-        
-
+        pygame.draw.circle(shape_surf, self.color, (radius, radius), radius)
+        screen.blit(shape_surf, target_rect)
     
     def check_edges(self):
         if self.location.x > WIDTH:
@@ -50,7 +47,20 @@ class Mover:
             self.location.y = 0
             self.velocity.y *= -1 
 
-movers = [Mover() for _ in range(20)]
+GRAY_50 = (128, 128, 128, 50)
+RED_50 = (255, 0, 0, 50)
+GREEN_50 = (0, 255, 0, 50)
+BLUE_50 = (0, 0, 255, 50)
+
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+
+movers = []
+for _ in range(100):
+    random_color = random.choice([GRAY_50, RED_50, GREEN_50, BLUE_50])
+    random_location = Vec2d(random.randint(0, WIDTH), random.randint(0, HEIGHT))
+    random_mass = random.uniform(0.5, 4)
+    movers.append(Mover(random_location, random_mass, random_color))
 
 pygame.init()
 
@@ -62,10 +72,6 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
 
 pygame.display.set_caption('Bouncing Balls with Force')
 
-GRAY = (128, 128, 128, 50)
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-
 while True:
     screen.fill(WHITE)
     for event in pygame.event.get():
@@ -73,7 +79,6 @@ while True:
             pygame.quit()
             sys.exit()
 
-    mouse_x, mouse_y = pygame.mouse.get_pos()
     wind = Vec2d(0.01, 0)
     gravity = Vec2d(0, 0.1)
 
@@ -81,8 +86,7 @@ while True:
         mover.apply_force(wind)
         mover.apply_force(gravity)
         mover.update()
-        #mover.display()
-        mover.draw_circle_alpha(screen, GRAY, 16)
+        mover.display()
         mover.check_edges()
 
     pygame.display.update()
